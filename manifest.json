@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Stream Video Downloader",
+  "version": "1.0",
+  "description": "Download videos from streaming sites (HLS/m3u8, MP4).",
+  "permissions": [
+    "webRequest",
+    "storage",
+    "downloads",
+    "activeTab",
+    "scripting",
+    "declarativeNetRequest",
+    "offscreen"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["ffmpeg-core/*", "mux-storage.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
