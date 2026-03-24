@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Stream Video Downloader",
-  "version": "1.0",
+  "name": "NLB Stream Video Downloader",
+  "version": "1.1",
   "description": "Download videos from streaming sites (HLS/m3u8, MP4).",
   "permissions": [
     "webRequest",
@@ -12,7 +12,9 @@
     "declarativeNetRequest",
     "offscreen"
   ],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "background": {
     "service_worker": "background.js",
     "type": "module"
@@ -27,14 +29,23 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["ffmpeg-core/*", "mux-storage.js"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "ffmpeg-core/*",
+        "mux-storage.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ],
   "content_security_policy": {
