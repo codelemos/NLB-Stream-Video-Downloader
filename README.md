@@ -1,4 +1,4 @@
-# Stream Video Downloader
+# NLB Stream Video Downloader
 
 Uma extensão para Chrome que permite baixar vídeos de sites de streaming (HLS/m3u8, MP4), incluindo Vimeo com áudio e vídeo automaticamente combinados.
 
