@@ -1,0 +1,105 @@
+{
+  "app_name": {
+    "message": "HLS Stream Video Downloader"
+  },
+  "app_description": {
+    "message": "Download videos from streaming sites (HLS/m3u8)."
+  },
+  "debug_logs": {
+    "message": "Debug Logs"
+  },
+  "logs_placeholder": {
+    "message": "Application logs..."
+  },
+  "copy_to_clipboard": {
+    "message": "Copy to Clipboard"
+  },
+  "copied": {
+    "message": "Copied!"
+  },
+  "empty_state_title": {
+    "message": "No videos detected yet."
+  },
+  "empty_state_detail": {
+    "message": "Play a video to start detection."
+  },
+  "video_detected": {
+    "message": "Detected Video"
+  },
+  "complete_tag": {
+    "message": "COMPLETE"
+  },
+  "download_btn": {
+    "message": "Download"
+  },
+  "busy_btn": {
+    "message": "Busy"
+  },
+  "saved_btn": {
+    "message": "Saved"
+  },
+  "download_complete": {
+    "message": "Download complete."
+  },
+  "status_downloading": {
+    "message": "Downloading... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_downloading_stream": {
+    "message": "Downloading stream... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_converting": {
+    "message": "Converting... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_muxing": {
+    "message": "Converting (Muxing)... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "starting": {
+    "message": "Starting..."
+  },
+  "retry": {
+    "message": "Retry"
+  },
+  "saved_successfully": {
+    "message": "Saved successfully."
+  },
+  "saved_fallback": {
+    "message": "⚠ Saved as separate files (Conversion failed)."
+  },
+  "fragment_warning": {
+    "message": "Might be only a fragment"
+  },
+  "best_quality_hint": {
+    "message": "Best option: contains audio and video"
+  },
+  "star_on_github": {
+    "message": "Star on GitHub"
+  },
+  "error_status": {
+    "message": "Error: $ERROR$",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1"
+      }
+    }
+  }
+}

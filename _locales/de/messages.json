@@ -1,0 +1,105 @@
+{
+  "app_name": {
+    "message": "HLS Video Downloader"
+  },
+  "app_description": {
+    "message": "Laden Sie Videos von Streaming-Seiten (HLS/m3u8) herunter."
+  },
+  "debug_logs": {
+    "message": "Debug-Protokolle"
+  },
+  "logs_placeholder": {
+    "message": "Anwendungsprotokolle..."
+  },
+  "copy_to_clipboard": {
+    "message": "In Zwischenablage kopieren"
+  },
+  "copied": {
+    "message": "Kopiert!"
+  },
+  "empty_state_title": {
+    "message": "Noch keine Videos erkannt."
+  },
+  "empty_state_detail": {
+    "message": "Spielen Sie ein Video ab, um die Erkennung zu starten."
+  },
+  "video_detected": {
+    "message": "Video erkannt"
+  },
+  "complete_tag": {
+    "message": "VOLLSTÄNDIG"
+  },
+  "download_btn": {
+    "message": "Download"
+  },
+  "busy_btn": {
+    "message": "Beschäftigt"
+  },
+  "saved_btn": {
+    "message": "Gespeichert"
+  },
+  "download_complete": {
+    "message": "Download abgeschlossen."
+  },
+  "status_downloading": {
+    "message": "Wird heruntergeladen... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_downloading_stream": {
+    "message": "Stream wird heruntergeladen... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_converting": {
+    "message": "Wird konvertiert... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_muxing": {
+    "message": "Wird konvertiert (Muxing)... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "starting": {
+    "message": "Startet..."
+  },
+  "retry": {
+    "message": "Wiederholen"
+  },
+  "saved_successfully": {
+    "message": "Erfolgreich gespeichert."
+  },
+  "saved_fallback": {
+    "message": "⚠ Als separate Dateien gespeichert (Konvertierung fehlgeschlagen)."
+  },
+  "fragment_warning": {
+    "message": "Könnte nur ein Fragment sein"
+  },
+  "best_quality_hint": {
+    "message": "Beste Option: Enthält Audio und Video"
+  },
+  "star_on_github": {
+    "message": "Auf GitHub markieren"
+  },
+  "error_status": {
+    "message": "Fehler: $ERROR$",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1"
+      }
+    }
+  }
+}

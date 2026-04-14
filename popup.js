@@ -1,5 +1,15 @@
+import { CONFIG } from './config.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // Internationalize UI
+    localizeUI();
+
+    // Hide logs if not in dev
+    const logsSection = document.getElementById('logs-section');
+    if (CONFIG && CONFIG.ENV !== 'dev' && logsSection) {
+        logsSection.style.display = 'none';
+    }
+
     const tab = await getCurrentTab();
     if (!tab) return;
 
@@ -45,8 +55,8 @@ function renderVideoList(videos, downloads, tabId) {
         videoList.innerHTML = `
             <div class="empty-state">
                 <div style="font-size: 24px; margin-bottom: 8px;">📹</div>
-                <div>Nenhum vídeo detectado ainda.</div>
-                <div style="font-size: 11px; margin-top: 4px;">Reproduza um vídeo para iniciar a detecção.</div>
+                <div data-i18n="no_videos_found">${chrome.i18n.getMessage('empty_state_title')}</div>
+                <div style="font-size: 11px; margin-top: 4px;" data-i18n="play_video_to_detect">${chrome.i18n.getMessage('empty_state_detail')}</div>
             </div>
         `;
         return;
@@ -120,7 +130,7 @@ function createVideoCard(video, downloadState) {
     const badgeClass = video.type === 'm3u8' ? 'hls' : 'mp4';
 
     // Create Title
-    let title = 'Vídeo detectado';
+    let title = chrome.i18n.getMessage('video_detected');
 
     // Priority 1: Use Page Title if available (and sanitize it)
     if (video.pageTitle && video.pageTitle !== 'video') {
@@ -141,7 +151,7 @@ function createVideoCard(video, downloadState) {
     title = title.replace(/[-_]/g, ' ').replace(/\.mp4|\.m3u8/g, '');
 
     // Priority 3: Type fallback
-    if (title === 'Vídeo detectado' || title === 'playlist' || title === 'master' || title === 'index') {
+    if (title === chrome.i18n.getMessage('video_detected') || title === 'playlist' || title === 'master' || title === 'index') {
         if (video.pageTitle) title = video.pageTitle; // Fallback again
     }
 
@@ -165,23 +175,23 @@ function createVideoCard(video, downloadState) {
     if (downloadState) {
         if (downloadState.status === 'downloading') {
             progress = Math.round(downloadState.progress || 0);
-            statusText = `Baixando... ${progress}%`;
+            statusText = chrome.i18n.getMessage('status_downloading', [progress]);
         } else if (downloadState.status === 'muxing') {
             isMuxing = true;
             const muxP = downloadState.muxProgress || 0;
             // Visual logic: Download (0-100) -> Muxing (Start)
             // Ideally we show Muxing as a distinct phase
             progress = muxP;
-            statusText = `Convertendo... ${muxP}%`;
+            statusText = chrome.i18n.getMessage('status_converting', [muxP]);
         } else if (isComplete) {
             progress = 100;
-            statusText = 'Salvo com sucesso.';
+            statusText = chrome.i18n.getMessage('saved_successfully');
         } else if (downloadState.status === 'complete_with_error') {
             progress = 100;
-            statusText = '⚠ Salvo como arquivos separados (Falha na conversão).';
+            statusText = chrome.i18n.getMessage('saved_fallback');
             isError = true; // reusing error flag for visibility
         } else if (isError) {
-            statusText = `Erro: ${downloadState.error}`;
+            statusText = chrome.i18n.getMessage('error_status', [downloadState.error]);
         }
     }
 
@@ -201,8 +211,8 @@ function createVideoCard(video, downloadState) {
                 </div>
             </div>
             <div class="action-row">
-                <button class="btn-download" ${isDownloading || isComplete ? 'disabled' : ''} title="${video.isMaster ? 'Melhor opção: contém áudio e vídeo' : 'Pode ser apenas um fragmento'}">
-                    ${isComplete ? '<span>✓</span> Salvo' : (isDownloading ? '<span>⏳</span> Ocupado' : '<span>⬇</span> Baixar')}
+                <button class="btn-download" ${isDownloading || isComplete ? 'disabled' : ''} title="${video.isMaster ? chrome.i18n.getMessage('best_quality_hint') : chrome.i18n.getMessage('fragment_warning')}">
+                    ${isComplete ? '<span>✓</span> ' + chrome.i18n.getMessage('saved_btn') : (isDownloading ? '<span>⏳</span> ' + chrome.i18n.getMessage('busy_btn') : '<span>⬇</span> ' + chrome.i18n.getMessage('download_btn'))}
                 </button>
             </div>
         </div>
@@ -220,7 +230,7 @@ function createVideoCard(video, downloadState) {
     const btn = li.querySelector('.btn-download');
     btn.onclick = () => {
         btn.disabled = true;
-        btn.innerHTML = '<span>⏳</span> Starting...';
+        btn.innerHTML = '<span>⏳</span> ' + chrome.i18n.getMessage('starting');
         chrome.runtime.sendMessage({ action: "startDownload", video: video });
     };
 
@@ -244,7 +254,7 @@ function updateDownloadStatus(downloads) {
                 btn.innerHTML = `<span>⬇</span> ${p}%`;
                 fill.style.width = `${p}%`;
                 fill.classList.remove('muxing');
-                statusDiv.innerText = `Baixando stream... ${p}%`;
+                statusDiv.innerText = chrome.i18n.getMessage('status_downloading_stream', [p]);
 
             } else if (data.status === 'muxing') {
                 const mx = Math.round(data.muxProgress || 0);
@@ -254,21 +264,21 @@ function updateDownloadStatus(downloads) {
                 // Switch/Keep generic color or specific?
                 fill.classList.add('muxing');
                 fill.style.width = `${mx}%`;
-                statusDiv.innerText = `Convertendo (Muxing)... ${mx}%`;
+                statusDiv.innerText = chrome.i18n.getMessage('status_muxing', [mx]);
 
             } else if (data.status === 'complete') {
                 btn.disabled = true;
-                btn.innerHTML = '<span>✓</span> Saved';
+                btn.innerHTML = '<span>✓</span> ' + chrome.i18n.getMessage('saved_btn');
                 fill.style.width = '100%';
                 fill.classList.remove('muxing');
-                statusDiv.innerText = 'Download completo.';
+                statusDiv.innerText = chrome.i18n.getMessage('download_complete');
                 statusDiv.style.color = 'inherit';
 
             } else if (data.status === 'error') {
                 btn.disabled = false;
-                btn.innerHTML = '<span>↻</span> Retry';
+                btn.innerHTML = '<span>↻</span> ' + chrome.i18n.getMessage('retry');
                 fill.style.width = '0%';
-                statusDiv.innerText = `Erro: ${data.error}`;
+                statusDiv.innerText = chrome.i18n.getMessage('error_status', [data.error]);
                 statusDiv.style.color = '#d83b01';
             }
         }
@@ -295,7 +305,7 @@ function setupLogs() {
         try {
             if (navigator.clipboard) {
                 await navigator.clipboard.writeText(textToCopy);
-                copyBtn.textContent = 'Copied!';
+                copyBtn.textContent = chrome.i18n.getMessage('copied');
             } else {
                 throw new Error('Clipboard API unavailable');
             }
@@ -303,10 +313,26 @@ function setupLogs() {
             // Fallback: Using select and execCommand
             logsArea.select();
             document.execCommand('copy');
-            copyBtn.textContent = 'Copied!';
+            copyBtn.textContent = chrome.i18n.getMessage('copied');
         }
 
-        setTimeout(() => copyBtn.textContent = 'Copy to Clipboard', 1500);
+        setTimeout(() => copyBtn.textContent = chrome.i18n.getMessage('copy_to_clipboard'), 1500);
+    });
+}
+
+function localizeUI() {
+    // Localize simple text elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const message = chrome.i18n.getMessage(key);
+        if (message) el.innerText = message;
+    });
+
+    // Localize placeholders
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        const message = chrome.i18n.getMessage(key);
+        if (message) el.placeholder = message;
     });
 }
 

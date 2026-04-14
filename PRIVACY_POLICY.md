@@ -1,35 +1,35 @@
-# Política de Privacidade - Stream Video Downloader
+# Privacy Policy - Stream Video Downloader
 
-**Última atualização:** 24 de março de 2026
+**Last updated:** March 24, 2026
 
-A sua privacidade é fundamental para nós. Esta Política de Privacidade descreve como a extensão "Stream Video Downloader" (doravante "Nós", "A Extensão" ou "O Serviço") coleta, utiliza e protege os seus dados ao ser instalada e utilizada no seu navegador.
+Your privacy is fundamental to us. This Privacy Policy describes how the "Stream Video Downloader" extension (hereinafter "We", "The Extension", or "The Service") collects, uses, and protects your data when it is installed and used in your browser.
 
-Ao utilizar a nossa extensão, você concorda com a coleta e uso de informações de acordo com esta política.
+By using our extension, you agree to the collection and use of information in accordance with this policy.
 
-## 1. Coleta e Uso de Dados
+## 1. Data Collection and Use
 
-O "Stream Video Downloader" foi projetado para operar inteiramente localmente no seu dispositivo. **Nós não coletamos, não enviamos para nossos servidores, não armazenamos remotamente e não vendemos nenhum dado pessoal ou de navegação do usuário.**
+"Stream Video Downloader" is designed to operate entirely locally on your device. **We do not collect, send to our servers, remotely store, or sell any personal or browsing data of the user.**
 
-Para executar a sua função principal de detectar e efetuar o download de vídeos (como HLS, m3u8, e MP4), a extensão requer acesso a certas informações da sua navegação e permissões, utilizadas estritamente e exclusivamente da seguinte forma:
+To perform its core function of detecting and downloading videos (such as HLS, m3u8, and MP4), the extension requires access to certain browsing information and permissions, used strictly and exclusively as follows:
 
-*   **Inspeção de Rede (Permissões `webRequest`, `declarativeNetRequest`):** A extensão monitora localmente as requisições de rede feitas pelo seu navegador para identificar streams de vídeo em background. Ela pode ler cabeçalhos HTTP temporariamente (como `Referer`, `Origin`, `Cookies` e `Authorization`) apenas para conseguir replicar o acesso legítimo necessário e efetuar o download diretamente do servidor original do vídeo (evitando bloqueios de hotlinking). Nenhuma dessas informações de tráfego, URLs, cookies ou tokens é enviada para nós ou para terceiros.
-*   **Dados da Aba Atual e Interação (Permissões `activeTab`, `scripting`):** A extensão acessa as informações básicas da aba atual (como o título da página) apenas no momento exato em que há a detecção e o download do arquivo. Essa informação é usada puramente para sugerir um nome de arquivo inteligente a ser salvo no seu computador.
-*   **Armazenamento Temporário (Permissão `storage`):** Utilizamos o banco de dados interno e seguro nativo do seu navegador (`IndexedDB`) apenas de forma efêmera (temporária). Ele é usado como uma área de rascunho (scratch) para salvar os pedaços separados de arquivos de vídeo e áudio grandes antes deles serem integrados em um arquivo final unificado (.mp4 ou .ts). Assim que o vídeo é concluído ou há uma falha, os pedaços são inteiramente deletados dessa memória.
-*   **Processamento Seguro (Permissão `offscreen`):** Nós usamos um ambiente oculto fornecido pelo navegador para rodar conversões de mídia pesadas usando FFmpeg diretamente através de WebAssembly no seu processador. Nenhum vídeo é processado na nuvem.
-*   **Acesso à Pasta Local (Permissão `downloads`):** Uma vez pronto, o vídeo é repassado ao seu navegador para ser baixado diretamente para sua pasta nativa de Downloads local de forma segura e imediata.
+*   **Network Inspection (`webRequest`, `declarativeNetRequest` permissions):** The extension locally monitors the network requests made by your browser to identify video streams in the background. It may read HTTP headers temporarily (such as `Referer`, `Origin`, `Cookies`, and `Authorization`) only to replicate the necessary legitimate access and perform the download directly from the original video server (avoiding hotlinking blocks). None of this traffic information, URLs, cookies, or tokens is sent to us or third parties.
+*   **Current Tab and Interaction Data (`activeTab`, `scripting` permissions):** The extension accesses basic information from the current tab (such as the page title) only at the exact moment when video detection and file download occur. This information is used purely to suggest a smart filename to be saved on your computer.
+*   **Temporary Storage (`storage` permission):** We use your browser's native secure internal database (`IndexedDB`) only ephemerally (temporarily). It is used as a scratch area to save separate pieces of large video and audio files before they are integrated into a final unified file (.mp4 or .ts). As soon as the video is completed or a failure occurs, the pieces are entirely deleted from this memory.
+*   **Secure Processing (`offscreen` permission):** We use a hidden environment provided by the browser to run heavy media conversions using FFmpeg directly via WebAssembly on your processor. No video is processed in the cloud.
+*   **Local Folder Access (`downloads` permission):** Once ready, the video is passed to your browser to be downloaded directly into your local native Downloads folder securely and immediately.
 
-## 2. Compartilhamento de Dados com Terceiros
+## 2. Third-Party Data Sharing
 
-A extensão "Stream Video Downloader" está livre de rastreamento sistêmico. Não integramos serviços de análise (Analytics), rastreadores de publicidade de terceiros, ou software de telemetria baseados na nuvem. As únicas conexões de rede ativas que a extensão promove ocorrem entre o seu computador e os servidores dos sites que você, enquanto usuário, originou a execução/visualização do vídeo.
+The "Stream Video Downloader" extension is free of systemic tracking. We do not integrate analytics services, third-party advertising trackers, or cloud-based telemetry software. The only active network connections the extension promotes occur between your computer and the servers of the sites where you, as a user, originated the execution/viewing of the video.
 
-## 3. Segurança dos Dados
+## 3. Data Security
 
-Garantimos a segurança dos seus dados pelo simples princípio da não-coleta (privacy by design). Todo o ciclo de vida dos seus dados, interceptação de cabeçalhos sensíveis para contornar proteções e o agrupamento final do arquivo (Muxing) ocorre estritamente dentro da Sandbox segura do Chrome/Chromium instalada na máquina do usuário final.
+We ensure the security of your data through the simple principle of non-collection (privacy by design). The entire lifecycle of your data, the interception of sensitive headers to bypass protections, and the final assembly of the file (Muxing) occurs strictly within the secure Chrome/Chromium Sandbox installed on the end user's machine.
 
-## 4. Alterações nesta Política de Privacidade
+## 4. Changes to This Privacy Policy
 
-Podemos atualizar nossa Política de Privacidade futuramente. Informaremos sobre quaisquer mudanças com antecedência nas respectivas notas de lançamento ou publicando a nova política na página de listagem da loja de extensões para uma revisão transparente.
+We may update our Privacy Policy in the future. We will inform you of any changes in advance in the respective release notes or by publishing the new policy on the extension store listing page for transparent review.
 
-## 5. Contato
+## 5. Contact
 
-Se você tiver alguma dúvida, sugestão ou preocupação genuína de privacidade relacionada ao uso, permissões ou comportamento do produto durante a utilização, pedimos por gentileza que entre em contato na aba do suporte correspondente e pública presente na Chrome Web Store.
+If you have any questions, suggestions, or genuine privacy concerns related to the use, permissions, or behavior of the product during use, we kindly ask you to contact us on the corresponding and public support tab in the Chrome Web Store.

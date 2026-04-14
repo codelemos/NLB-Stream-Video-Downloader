@@ -1,0 +1,105 @@
+{
+  "app_name": {
+    "message": "Téléchargeur Vidéo HLS"
+  },
+  "app_description": {
+    "message": "Téléchargez des vidéos depuis des sites de streaming (HLS/m3u8)."
+  },
+  "debug_logs": {
+    "message": "Journaux de Débogage"
+  },
+  "logs_placeholder": {
+    "message": "Journaux de l'application..."
+  },
+  "copy_to_clipboard": {
+    "message": "Copier dans le Presse-papiers"
+  },
+  "copied": {
+    "message": "Copié !"
+  },
+  "empty_state_title": {
+    "message": "Aucune vidéo détectée pour le moment."
+  },
+  "empty_state_detail": {
+    "message": "Lancez une vidéo pour démarrer la détection."
+  },
+  "video_detected": {
+    "message": "Vidéo détectée"
+  },
+  "complete_tag": {
+    "message": "COMPLET"
+  },
+  "download_btn": {
+    "message": "Télécharger"
+  },
+  "busy_btn": {
+    "message": "Occupé"
+  },
+  "saved_btn": {
+    "message": "Enregistré"
+  },
+  "download_complete": {
+    "message": "Téléchargement terminé."
+  },
+  "status_downloading": {
+    "message": "Téléchargement... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_downloading_stream": {
+    "message": "Téléchargement du flux... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_converting": {
+    "message": "Conversion... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_muxing": {
+    "message": "Conversion (Muxing)... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "starting": {
+    "message": "Démarrage..."
+  },
+  "retry": {
+    "message": "Réessayer"
+  },
+  "saved_successfully": {
+    "message": "Enregistré avec succès."
+  },
+  "saved_fallback": {
+    "message": "⚠ Enregistré en fichiers séparés (Échec de conversion)."
+  },
+  "fragment_warning": {
+    "message": "Peut n'être qu'un fragment"
+  },
+  "best_quality_hint": {
+    "message": "Meilleure option : contient l'audio et la vidéo"
+  },
+  "star_on_github": {
+    "message": "Étoile sur GitHub"
+  },
+  "error_status": {
+    "message": "Erreur : $ERROR$",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1"
+      }
+    }
+  }
+}

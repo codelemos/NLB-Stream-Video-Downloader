@@ -13,6 +13,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         handleMux(message.requestId);
         sendResponse({ status: 'started' });
     }
+    // No 'return true' here as we respond synchronously with {status: 'started'}
 });
 
 async function handleMux(requestId) {
@@ -87,16 +88,16 @@ async function handleMux(requestId) {
             requestId: requestId,
             success: false,
             error: e.message || e.toString()
-        });
+        }).catch(() => {});
     } finally {
         currentRequestId = null;
         // Cleanup FFmpeg resources
         try {
             if (ffmpeg) {
                 await ffmpeg.deleteFile('input_video.ts').catch(() => {});
-                if (muxData && muxData.audioData) {
-                    await ffmpeg.deleteFile('input_audio.ts').catch(() => {});
-                }
+                // Use a local check or safer retrieval since muxData might be out of scope 
+                // but we only need to delete if they were written
+                await ffmpeg.deleteFile('input_audio.ts').catch(() => {});
                 await ffmpeg.deleteFile('output.mp4').catch(() => {});
             }
         } catch (cleanupErr) {

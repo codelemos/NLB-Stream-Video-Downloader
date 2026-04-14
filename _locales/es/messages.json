@@ -1,0 +1,105 @@
+{
+  "app_name": {
+    "message": "Descargador de Video HLS"
+  },
+  "app_description": {
+    "message": "Descarga vídeos de sitios de streaming (HLS/m3u8)."
+  },
+  "debug_logs": {
+    "message": "Registros de Depuración"
+  },
+  "logs_placeholder": {
+    "message": "Registros de la aplicación..."
+  },
+  "copy_to_clipboard": {
+    "message": "Copiar al Portapapeles"
+  },
+  "copied": {
+    "message": "¡Copiado!"
+  },
+  "empty_state_title": {
+    "message": "Aún no se detectan vídeos."
+  },
+  "empty_state_detail": {
+    "message": "Reproduce un vídeo para iniciar la detección."
+  },
+  "video_detected": {
+    "message": "Vídeo detectado"
+  },
+  "complete_tag": {
+    "message": "COMPLETO"
+  },
+  "download_btn": {
+    "message": "Descargar"
+  },
+  "busy_btn": {
+    "message": "Ocupado"
+  },
+  "saved_btn": {
+    "message": "Guardado"
+  },
+  "download_complete": {
+    "message": "Descarga completada."
+  },
+  "status_downloading": {
+    "message": "Descargando... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_downloading_stream": {
+    "message": "Descargando stream... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_converting": {
+    "message": "Convirtiendo... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_muxing": {
+    "message": "Convirtiendo (Muxing)... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "starting": {
+    "message": "Iniciando..."
+  },
+  "retry": {
+    "message": "Reintentar"
+  },
+  "saved_successfully": {
+    "message": "Guardado con éxito."
+  },
+  "saved_fallback": {
+    "message": "⚠ Guardado como archivos separados (Fallo en la conversión)."
+  },
+  "fragment_warning": {
+    "message": "Podría ser solo un fragmento"
+  },
+  "best_quality_hint": {
+    "message": "Mejor opción: contiene audio y vídeo"
+  },
+  "star_on_github": {
+    "message": "Estrella en GitHub"
+  },
+  "error_status": {
+    "message": "Error: $ERROR$",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1"
+      }
+    }
+  }
+}

@@ -1,57 +1,58 @@
 # NLB Stream Video Downloader
 
-Uma extensão para Chrome que permite baixar vídeos de sites de streaming (HLS/m3u8, MP4), incluindo Vimeo com áudio e vídeo automaticamente combinados.
+A Chrome extension that allows you to download videos from streaming sites (HLS/m3u8), including Vimeo with audio and video automatically combined.
 
-## ✨ Funcionalidades
+## ✨ Features
 
-- **Detecção automática** de vídeos em páginas (HLS/m3u8 e MP4)
-- **Download de streams HLS** com todos os segmentos combinados
-- **Muxing automático** de áudio e vídeo usando FFmpeg.wasm
-- **Suporte a Vimeo** - combina automaticamente streams separados de áudio/vídeo
-- **Nome inteligente** - salva arquivos com o título da página
-- **Progresso visual** - barra de progresso durante download
+- **Automated Detection** of videos on pages (HLS/m3u8)
+- **HLS Stream Download** with all segments combined
+- **Automatic Muxing** of audio and video using FFmpeg.wasm
+- **Vimeo Support** - automatically combines separate audio/video streams
+- **Smart Naming** - saves files with the page title
+- **Visual Progress** - progress bar during download
 
-## 📦 Instalação
+## 📦 Installation
 
-1. Clone ou baixe este repositório
-2. Abra `chrome://extensions/` no Chrome
-3. Ative o **Modo do desenvolvedor**
-4. Clique em **Carregar sem compactação**
-5. Selecione a pasta do projeto
+1. Clone or download this repository
+2. Open `chrome://extensions/` in Chrome
+3. Enable **Developer mode**
+4. Click **Load unpacked**
+5. Select the project folder
 
-## 🎯 Como Usar
+## 🎯 How to Use
 
-1. Acesse um site com vídeo (ex: Vimeo)
-2. Clique no ícone da extensão
-3. Vídeos detectados aparecerão na lista
-4. Clique em **Processar** para baixar
+1. Go to a site with video (e.g., Vimeo)
+2. Click on the extension icon
+3. Detected videos will appear in the list
+4. Click **Download** to process and save
 
-## 🛠️ Estrutura do Projeto
+## 🛠️ Project Structure
 
 ```
 ext-video-downloader/
-├── manifest.json       # Configuração da extensão
-├── background.js       # Service Worker principal
-├── downloader.js       # Lógica de download HLS
-├── content.js          # Script injetado nas páginas
-├── popup.html/js/css   # Interface do usuário
-├── offscreen.html/js   # Processamento FFmpeg.wasm
-└── ffmpeg-core/        # Arquivos FFmpeg.wasm bundlados
+├── _locales/           # i18n support (EN, PT, etc.)
+├── manifest.json       # Extension configuration
+├── background.js       # Main Service Worker
+├── downloader.js       # HLS download logic
+├── content.js          # Injected content script
+├── popup.html/js       # User interface
+├── offscreen.html/js   # FFmpeg.wasm processing
+└── ffmpeg-core/        # Bundled FFmpeg.wasm files
 ```
 
-## 🔧 Tecnologias
+## 🔧 Technologies
 
-- **Manifest V3** - API moderna de extensões Chrome
-- **FFmpeg.wasm** - Muxing de áudio/vídeo no browser
-- **HLS Parser** - Download de streams m3u8
-- **Offscreen Documents** - Processamento WebAssembly
+- **Manifest V3** - Modern Chrome extensions API
+- **FFmpeg.wasm** - In-browser audio/video muxing
+- **HLS Parser** - m3u8 stream downloader
+- **Offscreen Documents** - WebAssembly processing
 
-## 📝 Notas
+## 📝 Notes
 
-- A extensão tem ~32MB devido ao FFmpeg.wasm bundlado
-- Primeira execução pode demorar mais (carregamento do WASM)
-- Se o mux falhar, arquivos separados são salvos com instruções
+- The extension size is ~32MB due to the bundled FFmpeg.wasm
+- The first run might take longer (WASM loading)
+- If muxing fails, separate files are saved with instructions
 
-## 📄 Licença
+## 📄 License
 
 MIT

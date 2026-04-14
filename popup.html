@@ -1,235 +1,273 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <style>
-      :root {
-        --primary-color: #0078d4;
-        --success-color: #107c10;
-        --warning-color: #d83b01;
-        --bg-color: #f3f2f1;
-        --card-bg: #ffffff;
-        --text-primary: #323130;
-        --text-secondary: #605e5c;
-      }
 
-      body {
-        width: 400px;
-        margin: 0;
-        padding: 0;
-        font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-        background-color: var(--bg-color);
-        color: var(--text-primary);
-      }
+<head>
+  <meta charset="UTF-8">
+  <style>
+    :root {
+      --primary-color: #0078d4;
+      --success-color: #107c10;
+      --warning-color: #d83b01;
+      --bg-color: #f3f2f1;
+      --card-bg: #ffffff;
+      --text-primary: #323130;
+      --text-secondary: #605e5c;
+    }
 
-      header {
-        background: white;
-        padding: 12px 16px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
+    body {
+      width: 400px;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+    }
 
-      h3 {
-        margin: 0;
-        font-size: 16px;
-        font-weight: 600;
-      }
+    header {
+      background: white;
+      padding: 12px 16px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-      #video-list {
-        list-style: none;
-        padding: 12px;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
 
-      .video-card {
-        background: var(--card-bg);
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        overflow: hidden;
-        transition: box-shadow 0.2s;
-        display: flex;
-        flex-direction: column;
-      }
+    #video-list {
+      list-style: none;
+      padding: 12px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
 
-      .video-card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      }
+    .video-card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .card-content {
-        display: flex;
-        padding: 12px;
-        gap: 12px;
-      }
+    .video-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
 
-      .thumbnail-area {
-        width: 100px;
-        height: 56px;
-        background: #201f1e;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        flex-shrink: 0;
-      }
+    .card-content {
+      display: flex;
+      padding: 12px;
+      gap: 12px;
+    }
 
-      .thumbnail-icon {
-        font-size: 24px;
-        color: rgba(255,255,255,0.8);
-      }
+    .thumbnail-area {
+      width: 100px;
+      height: 56px;
+      background: #201f1e;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
 
-      .info-area {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-width: 0; /* Fix flex text overflow */
-      }
+    .thumbnail-icon {
+      font-size: 24px;
+      color: rgba(255, 255, 255, 0.8);
+    }
 
-      .video-title {
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: var(--text-primary);
-      }
+    .info-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+      /* Fix flex text overflow */
+    }
 
-      .meta-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
+    .video-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-primary);
+    }
 
-      .badge {
-        font-size: 10px;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-      }
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-      .badge.hls { background: #e3f2fd; color: #0078d4; border: 1px solid #b3d6fc; }
-      .badge.mp4 { background: #e6ffec; color: #107c10; border: 1px solid #bcebd5; }
+    .badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
 
-      .action-row {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-        margin-left: auto; /* Push to right */
-      }
+    .badge.hls {
+      background: #e3f2fd;
+      color: #0078d4;
+      border: 1px solid #b3d6fc;
+    }
 
-      .btn-download {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 6px 16px;
-        border-radius: 16px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
+    .badge.mp4 {
+      background: #e6ffec;
+      color: #107c10;
+      border: 1px solid #bcebd5;
+    }
 
-      .btn-download:hover { background-color: #005a9e; }
-      .btn-download:disabled { background-color: #c8c6c4; cursor: default; }
+    .action-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-left: auto;
+      /* Push to right */
+    }
 
-      /* Progress Bar Area */
-      .progress-area {
-        height: 4px;
-        background: #edebe9;
-        width: 100%;
-        position: relative;
-      }
-      
-      .progress-fill {
-        height: 100%;
-        background: var(--success-color);
-        width: 0%;
-        transition: width 0.3s ease-out;
-      }
-      
-      .progress-fill.muxing {
-        background: var(--warning-color); /* Orange for processing */
-      }
+    .btn-download {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-      .status-text {
-        font-size: 11px;
-        color: var(--text-secondary);
-        padding: 4px 12px;
-        background: #f8f8f8;
-        border-top: 1px solid #f3f2f1;
-        display: none; /* Hidden by default */
-      }
-      
-      .status-text.visible { display: block; }
-      .status-text.warning { color: #d83b01; background: #fde7e9; }
-      
-      /* Logs */
-      .logs-container {
-        padding: 12px;
-        border-top: 1px solid #ddd;
-        background: white;
-      }
-      .logs-header {
-        font-size: 11px;
-        color: var(--text-secondary);
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-      }
-      #logs-area {
-        width: 95%;
-        height: 80px;
-        margin-top: 8px;
-        font-family: monospace;
-        font-size: 10px;
-        border: 1px solid #e1dfdd;
-        resize: vertical;
-        display: none;
-      }
-      .show-logs #logs-area { display: block; }
+    .btn-download:hover {
+      background-color: #005a9e;
+    }
 
-      /* Empty State */
-      .empty-state {
-        text-align: center;
-        padding: 32px 16px;
-        color: var(--text-secondary);
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h3><img src="icons/icon16.png" style="width: 16px; height: 16px; margin-right: 18px; vertical-align: middle;">Video Downloader</h3>
-    </header>
+    .btn-download:disabled {
+      background-color: #c8c6c4;
+      cursor: default;
+    }
 
-    <ul id="video-list">
-      <!-- Cards injected here -->
-    </ul>
+    /* Progress Bar Area */
+    .progress-area {
+      height: 4px;
+      background: #edebe9;
+      width: 100%;
+      position: relative;
+    }
 
-    <div class="logs-container">
-        <div class="logs-header" id="toggle-logs">
-            <span>Debug Logs</span>
-            <span>▼</span>
-        </div>
-        <textarea id="logs-area" readonly placeholder="Application logs..."></textarea>
-        <button id="copy-logs" style="margin-top:8px; width:100%; padding:6px; background:#f3f2f1; border:1px solid #e1dfdd; border-radius:4px; cursor:pointer; font-size:11px;">Copy to Clipboard</button>
+    .progress-fill {
+      height: 100%;
+      background: var(--success-color);
+      width: 0%;
+      transition: width 0.3s ease-out;
+    }
+
+    .progress-fill.muxing {
+      background: var(--warning-color);
+      /* Orange for processing */
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: var(--text-secondary);
+      padding: 4px 12px;
+      background: #f8f8f8;
+      border-top: 1px solid #f3f2f1;
+      display: none;
+      /* Hidden by default */
+    }
+
+    .status-text.visible {
+      display: block;
+    }
+
+    .status-text.warning {
+      color: #d83b01;
+      background: #fde7e9;
+    }
+
+    /* Logs */
+    .logs-container {
+      padding: 12px;
+      border-top: 1px solid #ddd;
+      background: white;
+    }
+
+    .logs-header {
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #logs-area {
+      width: 95%;
+      height: 80px;
+      margin-top: 8px;
+      font-family: monospace;
+      font-size: 10px;
+      border: 1px solid #e1dfdd;
+      resize: vertical;
+      display: none;
+    }
+
+    .show-logs #logs-area {
+      display: block;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h3><img src="icons/icon16.png" style="width: 16px; height: 16px; margin-right: 18px; vertical-align: middle;"><span
+        data-i18n="app_name"></span></h3>
+    <a href="https://github.com/codelemos/NLB-Stream-Video-Downloader" target="_blank" id="github-icon-badge"><img
+        src="icons/github.png" style="width: 16px; height: 16px; margin-right: 18px; vertical-align: middle;"></a>
+  </header>
+
+  <ul id="video-list">
+    <!-- Cards injected here -->
+  </ul>
+
+  <div class="logs-container" id="logs-section">
+    <div class="logs-header" id="toggle-logs">
+      <span data-i18n="debug_logs"></span>
+      <span>▼</span>
     </div>
+    <textarea id="logs-area" readonly data-i18n-placeholder="logs_placeholder"></textarea>
+    <button id="copy-logs"
+      style="margin-top:8px; width:100%; padding:6px; background:#f3f2f1; border:1px solid #e1dfdd; border-radius:4px; cursor:pointer; font-size:11px;"
+      data-i18n="copy_to_clipboard"></button>
+  </div>
 
-    <script src="popup.js" type="module"></script>
-  </body>
+  <script src="popup.js" type="module"></script>
+</body>
+
 </html>

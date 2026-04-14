@@ -1,0 +1,105 @@
+{
+  "app_name": {
+    "message": "HLSS वीडियो डाउनलोडर"
+  },
+  "app_description": {
+    "message": "स्ट्रीमिंग साइटों (HLS/m3u8) से वीडियो डाउनलोड करें।"
+  },
+  "debug_logs": {
+    "message": "डीबग लॉग"
+  },
+  "logs_placeholder": {
+    "message": "एप्लिकेशन लॉग..."
+  },
+  "copy_to_clipboard": {
+    "message": "क्लिपबोर्ड पर कॉपी करें"
+  },
+  "copied": {
+    "message": "कॉपी किया गया!"
+  },
+  "empty_state_title": {
+    "message": "अभी तक कोई वीडियो नहीं मिला।"
+  },
+  "empty_state_detail": {
+    "message": "पता लगाने शुरू करने के लिए वीडियो चलाएं।"
+  },
+  "video_detected": {
+    "message": "वीडियो मिला"
+  },
+  "complete_tag": {
+    "message": "पूर्ण"
+  },
+  "download_btn": {
+    "message": "डाउनलोड"
+  },
+  "busy_btn": {
+    "message": "व्यस्त"
+  },
+  "saved_btn": {
+    "message": "सहेजा गया"
+  },
+  "download_complete": {
+    "message": "डाउनलोड पूरा हुआ।"
+  },
+  "status_downloading": {
+    "message": "डाउनलोड हो रहा है... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_downloading_stream": {
+    "message": "स्ट्रीम डाउनलोड हो रही है... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_converting": {
+    "message": "परिवर्तित हो रहा है... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_muxing": {
+    "message": "परिवर्तित (मक्सिंग) हो रहा है... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "starting": {
+    "message": "शुरू हो रहा है..."
+  },
+  "retry": {
+    "message": "पुनः प्रयास करें"
+  },
+  "saved_successfully": {
+    "message": "सफलतापूर्वक सहेजा गया।"
+  },
+  "saved_fallback": {
+    "message": "⚠ अलग फाइलों के रूप में सहेजा गया (रूपांतरण विफल)।"
+  },
+  "fragment_warning": {
+    "message": "केवल एक अंश हो सकता है"
+  },
+  "best_quality_hint": {
+    "message": "सबसे अच्छा विकल्प: ऑडियो और वीडियो दोनों शामिल हैं"
+  },
+  "star_on_github": {
+    "message": "GitHub पर स्टार दें"
+  },
+  "error_status": {
+    "message": "त्रुटि: $ERROR$",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1"
+      }
+    }
+  }
+}

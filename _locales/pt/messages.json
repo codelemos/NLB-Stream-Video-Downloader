@@ -1,0 +1,105 @@
+{
+  "app_name": {
+    "message": "NLB Stream Video Downloader"
+  },
+  "app_description": {
+    "message": "Baixe vídeos de sites de streaming (HLS/m3u8)."
+  },
+  "debug_logs": {
+    "message": "Logs de Depuração"
+  },
+  "logs_placeholder": {
+    "message": "Logs da aplicação..."
+  },
+  "copy_to_clipboard": {
+    "message": "Copiar"
+  },
+  "copied": {
+    "message": "Copiado!"
+  },
+  "empty_state_title": {
+    "message": "Nenhum vídeo detectado ainda."
+  },
+  "empty_state_detail": {
+    "message": "Reproduza um vídeo para iniciar a detecção."
+  },
+  "video_detected": {
+    "message": "Vídeo detectado"
+  },
+  "complete_tag": {
+    "message": "COMPLETO"
+  },
+  "download_btn": {
+    "message": "Baixar"
+  },
+  "busy_btn": {
+    "message": "Ocupado"
+  },
+  "saved_btn": {
+    "message": "Salvo"
+  },
+  "download_complete": {
+    "message": "Download completo."
+  },
+  "status_downloading": {
+    "message": "Baixando... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_downloading_stream": {
+    "message": "Baixando stream... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_converting": {
+    "message": "Convertendo... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "status_muxing": {
+    "message": "Convertendo (Muxing)... $PERCENT$%",
+    "placeholders": {
+      "PERCENT": {
+        "content": "$1"
+      }
+    }
+  },
+  "starting": {
+    "message": "Iniciando..."
+  },
+  "retry": {
+    "message": "Novamente"
+  },
+  "saved_successfully": {
+    "message": "Salvo com sucesso."
+  },
+  "saved_fallback": {
+    "message": "⚠ Salvo como arquivos separados (Falha na conversão)."
+  },
+  "fragment_warning": {
+    "message": "Pode ser apenas um fragmento"
+  },
+  "best_quality_hint": {
+    "message": "Melhor opção: contém áudio e vídeo"
+  },
+  "star_on_github": {
+    "message": "Ver no GitHub"
+  },
+  "error_status": {
+    "message": "Erro: $ERROR$",
+    "placeholders": {
+      "ERROR": {
+        "content": "$1"
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-
 import { HLSDownloader } from './downloader.js';
+import { CONFIG } from './config.js';
 import { storeMuxData, getMuxResult, deleteMuxData, cleanupOldEntries, clearAllMuxData } from './mux-storage.js';
 
 
@@ -324,8 +324,9 @@ function updateBadge(tabId) {
 }
 
 
-// Handle messages
+// Handle all incoming messages from popup, content scripts, and offscreen doc
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  // 1. Video detection messages
   if (request.action === "getVideos") {
     const tabId = request.tabId;
     sendResponse({ videos: detectedVideos[tabId] || {}, downloads: activeDownloads });
@@ -335,7 +336,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const tabId = sender.tab ? sender.tab.id : null;
       if (tabId) {
           if (!detectedVideos[tabId]) detectedVideos[tabId] = {};
-          
           request.videos.forEach(video => {
               const type = video.url.includes('.m3u8') ? 'm3u8' : 'mp4';
               if (!detectedVideos[tabId][video.url]) {
@@ -352,6 +352,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
   }
 
+  // 2. Download flow messages
   if (request.action === "startDownload") {
       startDownload(request.video);
       sendResponse({ status: "started" });
@@ -364,6 +365,42 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getLogs") {
       sendResponse({ logs: Logger.getLogs() });
   }
+
+  // 3. Environment & Config (For content script badge)
+  if (request.action === 'getConfig') {
+      Logger.log(`[VD] Script solicitado config. Ambiente atual: ${CONFIG.ENV}`);
+      sendResponse({ config: CONFIG });
+  }
+
+  // 4. Muxing messages (From offscreen document)
+  if (request.action === 'muxComplete' && request.requestId) {
+    const pending = pendingMuxOperations[request.requestId];
+    if (pending) {
+        if (request.success) {
+            pending.resolve(request.data);
+        } else {
+            pending.reject(new Error(request.error));
+        }
+        delete pendingMuxOperations[request.requestId];
+    }
+  }
+
+  if (request.action === 'muxLog') {
+    Logger.log(`[FFmpeg] ${request.message}`);
+  }
+
+  if (request.action === 'muxProgress' && request.requestId) {
+    const pending = pendingMuxOperations[request.requestId];
+    if (pending && pending.downloadId) {
+         const downloadId = pending.downloadId;
+         if (activeDownloads[downloadId]) {
+             activeDownloads[downloadId].muxProgress = request.progress;
+             broadcastUpdate();
+         }
+    }
+  }
+
+  // No global 'return true' needed as all responses are sent synchronously.
 });
 
 
@@ -483,35 +520,7 @@ async function setupDNRRule(targetUrl, referer, origin) {
 // Pending mux operations
 const pendingMuxOperations = {};
 
-// Listen for mux completion from offscreen document
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === 'muxComplete' && message.requestId) {
-        const pending = pendingMuxOperations[message.requestId];
-        if (pending) {
-            if (message.success) {
-                pending.resolve(message.data);
-            } else {
-                pending.reject(new Error(message.error));
-            }
-            delete pendingMuxOperations[message.requestId];
-        }
-    }
-    
-    if (message.action === 'muxLog') {
-        Logger.log(`[FFmpeg] ${message.message}`);
-    }
-
-    if (message.action === 'muxProgress' && message.requestId) {
-        const pending = pendingMuxOperations[message.requestId];
-        if (pending && pending.downloadId) {
-             const downloadId = pending.downloadId;
-             if (activeDownloads[downloadId]) {
-                 activeDownloads[downloadId].muxProgress = message.progress;
-                 broadcastUpdate();
-             }
-        }
-    }
-});
+// Note: Message listener moved and unified above for better reliability.
 
 // Ensure offscreen document exists
 async function ensureOffscreen() {
