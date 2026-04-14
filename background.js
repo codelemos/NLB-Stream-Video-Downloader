@@ -27,6 +27,10 @@ const Logger = {
     getLogs: () => Logger.logs.join('\n')
 };
 
+// Make Logger accessible to other scripts (like downloader.js)
+if (typeof window !== 'undefined') window.Logger = Logger;
+else if (typeof globalThis !== 'undefined') globalThis.Logger = Logger;
+
 // Clear storage for a tab when it connects or refreshes
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'loading') {
@@ -57,10 +61,12 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
         const { tabId, url, requestHeaders } = details;
         if (tabId === -1) return;
 
-        // Determine if video
-        const isVideo = url.includes('.m3u8') || url.includes('.mp4') || url.includes('.ts'); 
+        // Determine if video (Expanded for Vimeo JSON manifests)
+        const isVideo = url.includes('.m3u8') || url.includes('.mp4') || url.includes('.ts') || 
+                        (url.includes('vimeocdn.com') && (url.includes('playlist.json') || url.includes('master.json'))); 
         
         if (isVideo) {
+            if (url.includes('vimeocdn.com')) Logger.log(`[VIMEO] Capturando link na rede: ${url.substring(0, 80)}...`);
             const capturedHeaders = {};
             requestHeaders.forEach(h => {
                 if (['authorization', 'referer', 'origin', 'cookie', 'user-agent'].includes(h.name.toLowerCase())) {
@@ -113,6 +119,9 @@ chrome.webRequest.onHeadersReceived.addListener(
       type = 'm3u8';
     } else if (contentType.includes('video/mp4') || url.includes('.mp4')) {
       type = 'mp4';
+    } else if (url.includes('vimeocdn.com') && (url.includes('playlist.json') || url.includes('master.json'))) {
+      type = 'm3u8'; // Treat vimeo JSON manifests as HLS streams
+      Logger.log(`[VIMEO] Identificado manifesto JSON como Stream: ${url.substring(0, 60)}`);
     }
 
     if (type) {
@@ -200,13 +209,18 @@ chrome.webRequest.onHeadersReceived.addListener(
           } else {
              // New Entry
              const lowerUrl = url.toLowerCase();
-             const isFrag = lowerUrl.includes('/range/') || 
+             let isFrag = lowerUrl.includes('/range/') || 
                             lowerUrl.includes('segment') || 
                             lowerUrl.includes('frag') || 
                             lowerUrl.includes('chunk') || 
                             lowerUrl.includes('init') || 
                             lowerUrl.includes('mime') ||
                             lowerUrl.match(/\.ts($|\?)/);
+             
+             // [VIMEO FIX] Manifests are never fragments
+             if (lowerUrl.includes('playlist.json') || lowerUrl.includes('master.json') || lowerUrl.includes('master.m3u8')) {
+                 isFrag = false;
+             }
                             
              let pageTitle = 'video';
              chrome.tabs.get(tabId, (tab) => {
@@ -231,7 +245,8 @@ chrome.webRequest.onHeadersReceived.addListener(
              };
              
              if (!isFrag) {
-                 Logger.log(`Detected new video`, { key: videoKey, type });
+                 const prefix = url.includes('vimeocdn.com') ? '[VIMEO] ' : '';
+                 Logger.log(`${prefix}Detectado novo vídeo`, { key: videoKey, type });
                  // Probe the video to check if it's a master playlist
                  if (type === 'm3u8') {
                      probeVideo(videoKey, url, tabId);
@@ -280,22 +295,24 @@ async function probeVideo(videoKey, fullUrl, tabId) {
         
         const text = new TextDecoder().decode(value || new Uint8Array());
         
-        if (text.includes('#EXT-X-STREAM-INF')) {
-            // It's a Master Playlist!
+        const isMaster = text.includes('#EXT-X-STREAM-INF') || 
+                        (text.trim().startsWith('{') && (text.includes('"streams"') || text.includes('"files"')));
+
+        if (isMaster) {
+            // It's a Master Playlist or Vimeo Config!
             if (detectedVideos[tabId] && detectedVideos[tabId][videoKey]) {
                 detectedVideos[tabId][videoKey].isMaster = true;
-                Logger.log("Confirmed Master Playlist:", videoKey);
+                Logger.log("[VIMEO] Confirmado manifesto principal (Master):", videoKey);
                 broadcastUpdate(); // Refresh UI to hide media playlists now that a master is found
             }
         } else if (text.includes('#EXTINF')) {
              if (detectedVideos[tabId] && detectedVideos[tabId][videoKey]) {
                 detectedVideos[tabId][videoKey].isMedia = true;
-                // Maybe check for AUDIO group? Rare in media playlist.
             }
         }
         
     } catch (e) {
-        Logger.log("Probe failed for", url, e.message);
+        Logger.log("Probe failed for", fullUrl, e.message);
     }
 }
 
@@ -370,14 +387,20 @@ async function startDownload(video) {
     }
 
     // 1. Setup DNR Rules
-    const referer = video.headers ? (video.headers['Referer'] || video.headers['referer']) : null;
+    let finalReferer = video.headers ? (video.headers['Referer'] || video.headers['referer']) : null;
     const origin = video.headers ? (video.headers['Origin'] || video.headers['origin']) : null;
+    
+    // [VIMEO FIX] Always enforce the Vimeo player referer to prevent 403
+    if (video.url.includes('vimeocdn.com')) {
+        finalReferer = 'https://player.vimeo.com/';
+        Logger.log("[VIMEO] Forçando Referer: " + finalReferer);
+    }
     
     try {
         new URL(video.url); // Check validity
-        if (referer) {
-            Logger.log("Setting up DNR rule for Referer:", referer);
-            await setupDNRRule(video.url, referer, origin);
+        if (finalReferer) {
+            Logger.log("Setting up DNR rule for Referer:", finalReferer);
+            await setupDNRRule(video.url, finalReferer, origin);
         } else {
             Logger.log("No Referer found to inject. Using default.");
         }

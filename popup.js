@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function getCurrentTab() {
-  let queryOptions = { active: true, currentWindow: true };
-  let [tab] = await chrome.tabs.query(queryOptions);
-  return tab;
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
 }
 
 function refreshUI(tabId) {
@@ -35,7 +35,7 @@ function renderVideoList(videos, downloads, tabId) {
 
     // Sort: Master > Timestamp. Filter out incomplete objects.
     const validKeys = Object.keys(videos).filter(k => videos[k].url && videos[k].type);
-    const sortedKeys = validKeys.sort((a,b) => {
+    const sortedKeys = validKeys.sort((a, b) => {
         if (videos[b].isMaster && !videos[a].isMaster) return 1;
         if (!videos[b].isMaster && videos[a].isMaster) return -1;
         return (videos[b].timestamp || 0) - (videos[a].timestamp || 0);
@@ -69,17 +69,17 @@ function renderVideoList(videos, downloads, tabId) {
         } else {
             displayKeys = [...hlsVideos];
         }
-        
+
         // Only show MP4s if they look "high quality" or distinct? 
         // For now, let's show them BUT maybe we can hide "detected video" MP4s if HLS exists?
         // Let's just append them for now but allow user to distinguish.
         // Actually, user complained about too many options.
         // Rule: If HLS exists, verify MP4s. If MP4 name is generic/unknown, hide it.
-        
+
         mp4Videos.forEach(k => {
             const v = videos[k];
             // Check if URL contains indicative names
-            if (v.pageTitle && v.url.includes(v.pageTitle)) { 
+            if (v.pageTitle && v.url.includes(v.pageTitle)) {
                 // Keep if looks like main video
                 displayKeys.push(k);
             } else if (!v.url.includes('blob:')) {
@@ -96,19 +96,19 @@ function renderVideoList(videos, downloads, tabId) {
         const video = videos[key];
         try {
             // Filter fragments (Stricter)
-            if (video.isFragment || 
-                video.url?.includes('/range/') || 
-                video.url?.includes('segment') || 
-                video.url?.includes('frag') || 
-                video.url?.includes('chunk') || 
-                video.url?.includes('init') || 
+            if (video.isFragment ||
+                video.url?.includes('/range/') ||
+                video.url?.includes('segment') ||
+                video.url?.includes('frag') ||
+                video.url?.includes('chunk') ||
+                video.url?.includes('init') ||
                 video.url?.match(/\.ts($|\?)/)) {
-                    return;
+                return;
             }
 
             const card = createVideoCard(video, downloads[video.url]);
             videoList.appendChild(card);
-        } catch(e) {
+        } catch (e) {
             console.error("Error rendering item", e);
         }
     });
@@ -118,14 +118,14 @@ function createVideoCard(video, downloadState) {
     // Determine Type Text
     const type = video.type === 'm3u8' ? 'HLS' : 'MP4';
     const badgeClass = video.type === 'm3u8' ? 'hls' : 'mp4';
-    
+
     // Create Title
     let title = 'Vídeo detectado';
-    
+
     // Priority 1: Use Page Title if available (and sanitize it)
     if (video.pageTitle && video.pageTitle !== 'video') {
         title = video.pageTitle;
-    } 
+    }
     // Priority 2: URL Filename
     else {
         try {
@@ -134,17 +134,17 @@ function createVideoCard(video, downloadState) {
             if (path && path.length > 3 && !path.startsWith('seg') && !path.startsWith('frag')) {
                 title = decodeURIComponent(path).split('.')[0];
             }
-        } catch(e) {}
+        } catch (e) { }
     }
-    
+
     // Cleanup title
     title = title.replace(/[-_]/g, ' ').replace(/\.mp4|\.m3u8/g, '');
-    
+
     // Priority 3: Type fallback
     if (title === 'Vídeo detectado' || title === 'playlist' || title === 'master' || title === 'index') {
         if (video.pageTitle) title = video.pageTitle; // Fallback again
     }
-    
+
     // Formatting title
     if (title.length > 40) title = title.substring(0, 40) + '...';
 
@@ -161,7 +161,7 @@ function createVideoCard(video, downloadState) {
     let progress = 0;
     let isMuxing = false;
     let statusText = '';
-    
+
     if (downloadState) {
         if (downloadState.status === 'downloading') {
             progress = Math.round(downloadState.progress || 0);
@@ -171,7 +171,7 @@ function createVideoCard(video, downloadState) {
             const muxP = downloadState.muxProgress || 0;
             // Visual logic: Download (0-100) -> Muxing (Start)
             // Ideally we show Muxing as a distinct phase
-            progress = muxP; 
+            progress = muxP;
             statusText = `Convertendo... ${muxP}%`;
         } else if (isComplete) {
             progress = 100;
@@ -245,12 +245,12 @@ function updateDownloadStatus(downloads) {
                 fill.style.width = `${p}%`;
                 fill.classList.remove('muxing');
                 statusDiv.innerText = `Baixando stream... ${p}%`;
-            
+
             } else if (data.status === 'muxing') {
                 const mx = Math.round(data.muxProgress || 0);
                 btn.disabled = true;
                 btn.innerHTML = `<span>⚙</span> ${mx}%`;
-                
+
                 // Switch/Keep generic color or specific?
                 fill.classList.add('muxing');
                 fill.style.width = `${mx}%`;
@@ -284,26 +284,39 @@ function setupLogs() {
     logsHeader.addEventListener('click', () => {
         logsContainer.classList.toggle('show-logs');
         if (logsContainer.classList.contains('show-logs')) {
-             fetchLogs(logsArea);
+            fetchLogs(logsArea);
         }
     });
-    
+
     copyBtn.addEventListener('click', async () => {
         await fetchLogs(logsArea);
-        logsArea.select();
-        document.execCommand('copy');
-        copyBtn.textContent = 'Copied!';
+        const textToCopy = logsArea.value;
+
+        try {
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(textToCopy);
+                copyBtn.textContent = 'Copied!';
+            } else {
+                throw new Error('Clipboard API unavailable');
+            }
+        } catch (err) {
+            // Fallback: Using select and execCommand
+            logsArea.select();
+            document.execCommand('copy');
+            copyBtn.textContent = 'Copied!';
+        }
+
         setTimeout(() => copyBtn.textContent = 'Copy to Clipboard', 1500);
     });
 }
 
 function fetchLogs(area) {
     return new Promise(resolve => {
-         chrome.runtime.sendMessage({ action: "getLogs" }, (response) => {
-             if (response && response.logs) {
-                 area.value = response.logs;
-             }
-             resolve();
-         });
+        chrome.runtime.sendMessage({ action: "getLogs" }, (response) => {
+            if (response && response.logs) {
+                area.value = response.logs;
+            }
+            resolve();
+        });
     });
 }
